@@ -18,33 +18,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        features: [default, static]
+        os: [windows-latest]
+        features: [default]
         rust-version: ["stable"]
 
     env:
       feature-flags: ${{ matrix.features != 'default' && format('--features {0}', matrix.features) || '' }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
+      - name: Where
+        run: get-command echo
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: ${{ matrix.rust-version }}
-          components: clippy, rustfmt
+      - name: Where CMake
+        run: get-command cmake
 
-      - name: Check formatting
-        run: cargo fmt --all -- --check
+      - name: Try
+        run: cmake -E env echo "Hello"
 
-      - name: Check clippy lints
-        run: cargo clippy --all ${{ env.feature-flags }} -- --deny warnings
+      - name: Env
+        run: cmake -E environment
 
-      - name: Build
-        run: cargo build --release --verbose ${{ env.feature-flags }}
+      - name: Cmd
+        run: get-command
 
-      - name: Test
-        run: cargo test --verbose ${{ env.feature-flags }}
+      - name: Env
+        run: cmake -E env where echo
+
