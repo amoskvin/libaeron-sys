@@ -44,6 +44,7 @@ done
 
 echo "Testing..."
 cargo clean -v
+cargo build
 cargo test --quiet
 
 git status
